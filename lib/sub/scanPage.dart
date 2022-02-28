@@ -1,8 +1,10 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+
+import 'package:camera/camera.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:wifi_ocr/cameraModule.dart';
-import 'package:wifi_ocr/sub/wifiListPage.dart';
+import 'package:wifi_connector/wifi_connector.dart';
+
 import '../wifiItem.dart';
 
 class ScanPage extends StatefulWidget {
@@ -13,6 +15,7 @@ class ScanPage extends StatefulWidget {
 }
 
 class _ScanPage extends State<ScanPage> {
+  final _nameController = TextEditingController(text: '');
   final _ssidController = TextEditingController(text: '');
   final _passwordController = TextEditingController(text: '');
   QrImage? image;
@@ -43,6 +46,7 @@ class _ScanPage extends State<ScanPage> {
 
                     if (result != null) {
                       // Future.delayed(Duration.zero, () {
+                      _nameController.text = result['id'].toString();
                       _ssidController.text = result['id'].toString();
                       _passwordController.text = result['pw'].toString();
                       // });
@@ -60,6 +64,10 @@ class _ScanPage extends State<ScanPage> {
             Column(
               children: <Widget>[
                 _buildTextInput(
+                  'name',
+                  _nameController,
+                ),
+                _buildTextInput(
                   'ssid',
                   _ssidController,
                 ),
@@ -72,7 +80,7 @@ class _ScanPage extends State<ScanPage> {
             ElevatedButton(
               child: Text('Connect & Save'),
               onPressed: () {
-                Wifi.addWifi(_ssidController.text, _ssidController.text,
+                Wifi.addWifi(_nameController.text, _ssidController.text,
                     _passwordController.text, 'assets/QR_wiki.svg', false);
                 _ssidController.text = '';
                 _passwordController.text = '';
@@ -107,14 +115,9 @@ class _ScanPage extends State<ScanPage> {
     );
   }
 
-/* 텍스트필드 컨트롤러 사용 예시
   Future<void> _onConnectPressed() async {
     final ssid = _ssidController.text; //maxLength: 32
     final password = _passwordController.text; //minLength: 8, maxLength: 16(WEP)/63(WPA1,2)
-    setState(() => _isSucceed = false);
-    final isSucceed =
     await WifiConnector.connectToWifi(ssid: ssid, password: password);
-    setState(() => _isSucceed = isSucceed);
   }
-   */
 }
