@@ -9,7 +9,32 @@ class ScanPage extends StatelessWidget {
     return Scaffold(
       body: Container(
         child: Center(
-          child: Text("카메라"),
+          child: Column(
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  ElevatedButton(
+                    child: Text('Scan Text/QR'),
+                    onPressed: () {
+                    },
+                  ),
+                  ElevatedButton(
+                    child: Text('Edit'),
+                    onPressed: () {
+                    },
+                  ),
+                ],
+              ),
+              Image.asset('assets/QR_wiki.svg', width: 300,),
+              Text('SSID : '),
+              Text('PW   :'),
+              ElevatedButton(
+                child: Text('Connect & Save'),
+                onPressed: () {
+                },
+              ),
+            ],
+          )
         ),
       ),
     );
