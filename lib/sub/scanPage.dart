@@ -3,8 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:wifi_ocr/cameraModule.dart';
 
-class ScanPage extends StatelessWidget {
+class ScanPage extends StatefulWidget {
   ScanPage({Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _ScanPage();
+}
+
+class _ScanPage extends State<ScanPage> {
+  final _ssidController = TextEditingController(text: '');
+  final _passwordController = TextEditingController(text: '');
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +55,18 @@ class ScanPage extends StatelessWidget {
               'assets/QR_wiki.svg',
               width: 300,
             ),
-            Text('SSID : '),
-            Text('PW   :'),
+            Column(
+              children: <Widget>[
+                _buildTextInput(
+                  'ssid',
+                  _ssidController,
+                ),
+                _buildTextInput(
+                  'password',
+                  _passwordController,
+                ),
+              ],
+            ),
             ElevatedButton(
               child: Text('Connect & Save'),
               onPressed: () {
@@ -60,4 +78,37 @@ class ScanPage extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildTextInput(String title, TextEditingController controller) {
+    return Row(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 24.0),
+          child: Container(width: 80.0, child: Text(title)),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 32.0),
+            child: TextField(
+              controller: controller,
+              onChanged: (value) => setState(
+                () {},
+              ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+/* 텍스트필드 컨트롤러 사용 예시
+  Future<void> _onConnectPressed() async {
+    final ssid = _ssidController.text; //maxLength: 32
+    final password = _passwordController.text; //minLength: 8, maxLength: 16(WEP)/63(WPA1,2)
+    setState(() => _isSucceed = false);
+    final isSucceed =
+    await WifiConnector.connectToWifi(ssid: ssid, password: password);
+    setState(() => _isSucceed = isSucceed);
+  }
+   */
 }

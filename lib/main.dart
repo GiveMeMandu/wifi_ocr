@@ -6,7 +6,6 @@ import 'package:camera/camera.dart';
 
 import '../wifiItem.dart';
 import 'package:wifi_ocr/sub/scanPage.dart';
-import 'package:wifi_ocr/sub/textFieldPage.dart';
 import 'package:wifi_ocr/sub/wifiListPage.dart';
 
 void main() {
@@ -49,6 +48,24 @@ class _MyHomePageState extends State<MyHomePage>
     controller = TabController(length: 2, vsync: this);
     wifiList.add(Wifi(
         name: '우찬 자취방',
+        ssid: 'Bourbon',
+        pw: 'examplePW',
+        imagePath: 'assets/QR_wiki.svg',
+        isFiveGhz: false));
+    wifiList.add(Wifi(
+        name: '현수 자취방',
+        ssid: 'Bourbon',
+        pw: 'examplePW',
+        imagePath: 'assets/QR_wiki.svg',
+        isFiveGhz: false));
+    wifiList.add(Wifi(
+        name: '인영 자취방',
+        ssid: 'Bourbon',
+        pw: 'examplePW',
+        imagePath: 'assets/QR_wiki.svg',
+        isFiveGhz: false));
+    wifiList.add(Wifi(
+        name: '수연 자취방',
         ssid: 'Bourbon',
         pw: 'examplePW',
         imagePath: 'assets/QR_wiki.svg',
