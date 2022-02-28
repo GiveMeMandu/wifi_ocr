@@ -16,11 +16,20 @@ class WifiListPage extends StatelessWidget {
                   child: Card(
                     child: Row(
                       children: <Widget>[
-                        Image.asset(
-                          list[position].imagePath!,
-                          height: 100,
-                          width: 100,
-                          fit: BoxFit.contain,
+                        GestureDetector(
+                          child: Image.asset(
+                            list[position].imagePath!,
+                            height: 100,
+                            width: 100,
+                            fit: BoxFit.contain,
+                          ),
+                          onTap: () async {
+                            //QR만 확대
+                            await showDialog(
+                                context: context,
+                                builder: (_) => imageDialog(list[position].name!, list[position].imagePath!, context)
+                            );
+                          },
                         ),
                         Text(list[position].name!,
                             textAlign: TextAlign.center,
@@ -37,7 +46,7 @@ class WifiListPage extends StatelessWidget {
                     ),
                   ),
                   onTap: () {
-                    //QR 확대 + 하단에 세부정보
+                    //세부정보 alert
                   },
                   onLongPress: () {
                     //리스트뷰 내 카드 위치 편집
@@ -50,3 +59,34 @@ class WifiListPage extends StatelessWidget {
     );
   }
 }
+
+Widget imageDialog(text, path, context) {
+  return Dialog(
+    // backgroundColor: Colors.transparent,
+    // elevation: 0,
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: IconButton(
+            alignment: Alignment.topRight,
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: Icon(Icons.close_rounded),
+            color: Colors.redAccent,
+          ),
+        ),
+        Container(
+          width: 350,
+          height: 350,
+          child: Image.asset(
+            path,
+            fit: BoxFit.cover,
+          ),
+        ),
+      ],
+    ),
+  );}
