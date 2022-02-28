@@ -39,14 +39,11 @@ class _ScanPage extends State<ScanPage> {
                     );
 
                     if (result != null) {
-                      print(result);
+                      // Future.delayed(Duration.zero, () {
+                      _ssidController.text = result['id'].toString();
+                      _passwordController.text = result['pw'].toString();
+                      // });
                     }
-                  },
-                ),
-                ElevatedButton(
-                  child: Text('Edit'),
-                  onPressed: () {
-                    //편집가능한 텍스트 필드 있는 페이지로 이동
                   },
                 ),
               ],

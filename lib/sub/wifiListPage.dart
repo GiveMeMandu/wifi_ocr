@@ -33,24 +33,26 @@ class _WifiListPage extends State<WifiListPage> {
                     },
                   ),
                   title: GestureDetector(
-                    child: Row(children: <Widget>[
-                      Text(
-                        widget.list[position].name!,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.bold),
-                      ),
-                      Column(children: <Widget>[
-                        Text(
-                          "SSID : " + widget.list[position].ssid!,
-                          style: TextStyle(fontSize: 12),
-                        ),
-                        Text(
-                          "Bands : 2.4Ghz", //getBandType()
-                          style: TextStyle(fontSize: 12),
-                        ),
-                      ]),
-                    ]),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Text(
+                            widget.list[position].name!,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 24, fontWeight: FontWeight.bold),
+                          ),
+                          Column(children: <Widget>[
+                            Text(
+                              "SSID : " + widget.list[position].ssid!,
+                              style: TextStyle(fontSize: 12),
+                            ),
+                            Text(
+                              "Bands : 2.4Ghz", //getBandType()
+                              style: TextStyle(fontSize: 12),
+                            ),
+                          ]),
+                        ]),
                     onTap: () async {
                       //세부정보 표시
                       await showDialog(
@@ -59,7 +61,10 @@ class _WifiListPage extends State<WifiListPage> {
                               detailDialog(widget.list[position], context));
                     },
                   ),
-                  trailing: Icon(Icons.more_vert),
+                  trailing: ReorderableDragStartListener(
+                    index: position,
+                    child: const Icon(Icons.drag_handle),
+                  ),
                 );
               },
               onReorder: (oldIndex, newIndex) {
