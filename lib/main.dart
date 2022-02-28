@@ -46,6 +46,12 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
     controller = TabController(length: 2, vsync: this);
     wifiList.add(
       Wifi(name: '우찬 자취방', ssid: 'Bourbon', pw: 'examplePW', imagePath: 'assets/QR_wiki.svg', isFiveGhz: false));
+    wifiList.add(
+        Wifi(name: '현수 자취방', ssid: 'Bourbon', pw: 'examplePW', imagePath: 'assets/QR_wiki.svg', isFiveGhz: false));
+    wifiList.add(
+        Wifi(name: '인영 자취방', ssid: 'Bourbon', pw: 'examplePW', imagePath: 'assets/QR_wiki.svg', isFiveGhz: false));
+    wifiList.add(
+        Wifi(name: '수연 자취방', ssid: 'Bourbon', pw: 'examplePW', imagePath: 'assets/QR_wiki.svg', isFiveGhz: false));
   }
 
   @override
