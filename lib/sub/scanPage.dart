@@ -1,5 +1,7 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:wifi_ocr/cameraModule.dart';
 
 class ScanPage extends StatefulWidget {
   ScanPage({Key? key}) : super(key: key);
@@ -18,35 +20,61 @@ class _ScanPage extends State<ScanPage> {
       body: Container(
         child: Center(
             child: Column(
+          children: <Widget>[
+            Row(
               children: <Widget>[
                 ElevatedButton(
-                  child: const Text('Scan Text/QR'),
-                  onPressed: () {
-                    //카메라 페이지로 이동
+                  child: Text('Scan Text/QR'),
+                  onPressed: () async {
+                    final cameras = await availableCameras();
+                    final firstCamera = cameras.first;
+
+                    final result = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TakePictureScreen(
+                          camera: firstCamera,
+                        ),
+                      ),
+                    );
+
+                    if (result != null) {
+                      print(result);
+                    }
                   },
                 ),
-                Image.asset('assets/QR_wiki.svg', width: 300,),
-                Column(
-                  children: <Widget>[
-                    _buildTextInput(
-                      'ssid',
-                      _ssidController,
-                    ),
-                    _buildTextInput(
-                      'password',
-                      _passwordController,
-                    ),
-                  ],
-                ),
                 ElevatedButton(
-                  child: const Text('Connect & Save'),
+                  child: Text('Edit'),
                   onPressed: () {
-                    //wifi 연결 시도 후 성공 시 wifi클래스 정보 담은 QR생성 및 List에 추가
+                    //편집가능한 텍스트 필드 있는 페이지로 이동
                   },
                 ),
               ],
-            )
-        ),
+            ),
+            Image.asset(
+              'assets/QR_wiki.svg',
+              width: 300,
+            ),
+            Column(
+              children: <Widget>[
+                _buildTextInput(
+                  'ssid',
+                  _ssidController,
+                ),
+                _buildTextInput(
+                  'password',
+                  _passwordController,
+                ),
+              ],
+            ),
+            ElevatedButton(
+              child: Text('Connect & Save'),
+              onPressed: () {
+                //wifi 연결 시도 후 성공 시 wifi클래스 정보 담은 QR생성 및 List에 추가
+              },
+            ),
+          ],
+        )),
       ),
     );
   }
@@ -63,10 +91,9 @@ class _ScanPage extends State<ScanPage> {
             padding: const EdgeInsets.symmetric(horizontal: 32.0),
             child: TextField(
               controller: controller,
-              onChanged: (value) =>
-                  setState(
-                        () {},
-                  ),
+              onChanged: (value) => setState(
+                () {},
+              ),
             ),
           ),
         )

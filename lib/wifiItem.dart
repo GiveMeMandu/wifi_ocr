@@ -9,10 +9,10 @@ class Wifi {
   bool? isConnected = false;
 
   Wifi(
-      { required this.name,
-        required this.ssid,
-        required this.pw,
-        this.imagePath,
-        this.isFiveGhz,
-        this.isConnected});
+      {required this.name,
+      required this.ssid,
+      required this.pw,
+      this.imagePath,
+      this.isFiveGhz,
+      this.isConnected});
 }
