@@ -10,6 +10,7 @@ import 'package:wifi_ocr/sub/textFieldPage.dart';
 import 'package:wifi_ocr/sub/wifiListPage.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
