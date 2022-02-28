@@ -16,25 +16,22 @@ class WifiListPage extends StatelessWidget {
                   child: Card(
                     child: Row(
                       children: <Widget>[
-                        Text(list[position].ssid!),
+                        //Image,
+                        Text(list[position].name!),
+                        Row(
+                          children: <Widget>[
+                            Text(list[position].ssid!),
+                            //Text(list[position].band!),
+                          ]
+                        ),
                       ],
                     ),
                   ),
                   onTap: () {
-                    AlertDialog dialog = AlertDialog(
-                      /*
-                      content: Text(
-                        '이 동물은 ${list[position].kind} 입니다',
-                        style: TextStyle(fontSize: 30.0),
-                      ),
-                       */
-                    );
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) => dialog);
+                    //QR 확대 + 하단에 세부정보
                   },
                   onLongPress: () {
-                    list.removeAt(position);
+                    //리스트뷰 내 카드 위치 편집
                   },
                 );
               },
