@@ -2,6 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:wifi_ocr/cameraModule.dart';
+import 'package:wifi_connector/wifi_connector.dart';
 
 class ScanPage extends StatefulWidget {
   ScanPage({Key? key}) : super(key: key);
@@ -13,6 +14,7 @@ class ScanPage extends StatefulWidget {
 class _ScanPage extends State<ScanPage> {
   final _ssidController = TextEditingController(text: '');
   final _passwordController = TextEditingController(text: '');
+  String _data = "";
 
   @override
   Widget build(BuildContext context) {
@@ -40,17 +42,18 @@ class _ScanPage extends State<ScanPage> {
 
                     if (result != null) {
                       // Future.delayed(Duration.zero, () {
-                      _ssidController.text = result['id'].toString();
-                      _passwordController.text = result['pw'].toString();
+                      _ssidController.text = result['id'];
+                      _passwordController.text = result['pw'];
                       // });
                     }
                   },
                 ),
               ],
             ),
-            Image.asset(
-              'assets/QR_wiki.svg',
-              width: 300,
+            QrImage(
+              data: _data,
+              version: QrVersions.auto,
+              size: 300.0,
             ),
             Column(
               children: <Widget>[
@@ -68,6 +71,7 @@ class _ScanPage extends State<ScanPage> {
               child: Text('Connect & Save'),
               onPressed: () {
                 //wifi 연결 시도 후 성공 시 wifi클래스 정보 담은 QR생성 및 List에 추가
+                _onConnectPressed();
               },
             ),
           ],
@@ -98,14 +102,10 @@ class _ScanPage extends State<ScanPage> {
     );
   }
 
-/* 텍스트필드 컨트롤러 사용 예시
   Future<void> _onConnectPressed() async {
     final ssid = _ssidController.text; //maxLength: 32
     final password = _passwordController.text; //minLength: 8, maxLength: 16(WEP)/63(WPA1,2)
-    setState(() => _isSucceed = false);
-    final isSucceed =
     await WifiConnector.connectToWifi(ssid: ssid, password: password);
-    setState(() => _isSucceed = isSucceed);
+    _data = "{ 'id':\'${ssid}\', 'pw':\'${password}\' }";
   }
-   */
 }
