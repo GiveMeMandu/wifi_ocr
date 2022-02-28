@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../wifiItem.dart';
 
 class WifiListPage extends StatelessWidget {
-  final List<Wifi> list; // Animal List 선언
+  final List<Wifi> list; // wifi List 선언
   WifiListPage({Key? key, required this.list}) : super(key: key);
 
   @override
@@ -16,25 +16,31 @@ class WifiListPage extends StatelessWidget {
                   child: Card(
                     child: Row(
                       children: <Widget>[
-                        Text(list[position].ssid!),
+                        Image.asset(
+                          list[position].imagePath!,
+                          height: 100,
+                          width: 100,
+                          fit: BoxFit.contain,
+                        ),
+                        Text(list[position].name!,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),),
+                        Column(
+                          children: <Widget>[
+                            Text("SSID : " + list[position].ssid!,
+                            style: TextStyle(fontSize: 12),),
+                            Text("Bands : 2.4Ghz",//getBandType()
+                              style: TextStyle(fontSize: 12),),
+                          ]
+                        ),
                       ],
                     ),
                   ),
                   onTap: () {
-                    AlertDialog dialog = AlertDialog(
-                      /*
-                      content: Text(
-                        '이 동물은 ${list[position].kind} 입니다',
-                        style: TextStyle(fontSize: 30.0),
-                      ),
-                       */
-                    );
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) => dialog);
+                    //QR 확대 + 하단에 세부정보
                   },
                   onLongPress: () {
-                    list.removeAt(position);
+                    //리스트뷰 내 카드 위치 편집
                   },
                 );
               },
