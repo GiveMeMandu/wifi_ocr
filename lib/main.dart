@@ -3,13 +3,11 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:wifi_connector/wifi_connector.dart';
-import 'package:camera/camera.dart';
+import 'package:wifi_ocr/sub/scanPage.dart';
+import 'package:wifi_ocr/sub/wifiListPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../wifiItem.dart';
-import 'package:wifi_ocr/sub/scanPage.dart';
-import 'package:wifi_ocr/sub/wifiListPage.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
