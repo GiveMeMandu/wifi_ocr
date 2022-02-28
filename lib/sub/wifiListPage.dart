@@ -23,11 +23,10 @@ class WifiListPage extends StatelessWidget {
                             width: 100,
                             fit: BoxFit.contain,
                           ),
-                          onTap: () async {
-                            //QR만 확대
+                          onTap: () async {//QR만 확대
                             await showDialog(
                                 context: context,
-                                builder: (_) => imageDialog(list[position].name!, list[position].imagePath!, context)
+                                builder: (_) => qrDialog(list[position].imagePath!, context)
                             );
                           },
                         ),
@@ -45,8 +44,11 @@ class WifiListPage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  onTap: () {
-                    //세부정보 alert
+                  onTap: () async {//세부정보 표시
+                    await showDialog(
+                        context: context,
+                        builder: (_) => detailDialog(list[position], context)
+                    );
                   },
                   onLongPress: () {
                     //리스트뷰 내 카드 위치 편집
@@ -60,7 +62,7 @@ class WifiListPage extends StatelessWidget {
   }
 }
 
-Widget imageDialog(text, path, context) {
+Widget qrDialog(path, context) {
   return Dialog(
     // backgroundColor: Colors.transparent,
     // elevation: 0,
@@ -86,6 +88,41 @@ Widget imageDialog(text, path, context) {
             path,
             fit: BoxFit.cover,
           ),
+        ),
+      ],
+    ),
+  );}
+
+Widget detailDialog(wifi, context){
+  return Dialog(
+    // backgroundColor: Colors.transparent,
+    // elevation: 0,
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: IconButton(
+            alignment: Alignment.topRight,
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: Icon(Icons.close_rounded),
+            color: Colors.redAccent,
+          ),
+        ),
+        Container(
+          width: 350,
+          height: 350,
+          child: Column(
+            children: <Widget>[
+              Text('Name: ${wifi.name}'),
+              Text('SSID: ${wifi.ssid}'),
+              Text('PW  : ${wifi.pw}'),
+              // 이후 추가되는 속성들 추가해주세요
+            ],
+          )
         ),
       ],
     ),
