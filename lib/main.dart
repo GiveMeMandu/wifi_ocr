@@ -44,7 +44,9 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
   @override
   void initState() {
     super.initState();
-    controller = TabController(length: 3, vsync: this);
+    controller = TabController(length: 2, vsync: this);
+    wifiList.add(
+      Wifi(name: '우찬 자취방', ssid: 'Bourbon', pw: 'examplePW', imagePath: 'assets/QR_wiki.svg', isFiveGhz: false));
   }
 
   @override
@@ -57,7 +59,6 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
         children: <Widget>[
           WifiListPage(list: wifiList),
           ScanPage(),
-          TextFieldPage(),
         ],
         controller: controller,
       ),
@@ -68,9 +69,6 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
           ),
           Tab(
             icon: Icon(Icons.qr_code_scanner, color: Colors.blue),
-          ),
-          Tab(
-            icon: Icon(Icons.edit, color: Colors.blue),
           ),
         ],
         controller: controller,

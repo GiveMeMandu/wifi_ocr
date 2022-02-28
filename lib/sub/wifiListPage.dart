@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../wifiItem.dart';
 
 class WifiListPage extends StatelessWidget {
-  final List<Wifi> list; // Animal List 선언
+  final List<Wifi> list; // wifi List 선언
   WifiListPage({Key? key, required this.list}) : super(key: key);
 
   @override
@@ -16,12 +16,21 @@ class WifiListPage extends StatelessWidget {
                   child: Card(
                     child: Row(
                       children: <Widget>[
-                        //Image,
-                        Text(list[position].name!),
-                        Row(
+                        Image.asset(
+                          list[position].imagePath!,
+                          height: 100,
+                          width: 100,
+                          fit: BoxFit.contain,
+                        ),
+                        Text(list[position].name!,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),),
+                        Column(
                           children: <Widget>[
-                            Text(list[position].ssid!),
-                            //Text(list[position].band!),
+                            Text("SSID : " + list[position].ssid!,
+                            style: TextStyle(fontSize: 12),),
+                            Text("Bands : 2.4Ghz",//getBandType()
+                              style: TextStyle(fontSize: 12),),
                           ]
                         ),
                       ],
