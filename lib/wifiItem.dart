@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class Wifi {
   String? imagePath;
   String? name;
