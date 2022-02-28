@@ -63,7 +63,7 @@ class _TextFieldPage extends State<TextFieldPage> {
             child: TextField(
               controller: controller,
               onChanged: (value) => setState(
-                    () {},
+                () {},
               ),
             ),
           ),
@@ -77,7 +77,7 @@ class _TextFieldPage extends State<TextFieldPage> {
     final password = _passwordController.text;
     setState(() => _isSucceed = false);
     final isSucceed =
-    await WifiConnector.connectToWifi(ssid: ssid, password: password);
+        await WifiConnector.connectToWifi(ssid: ssid, password: password);
     setState(() => _isSucceed = isSucceed);
   }
 }
