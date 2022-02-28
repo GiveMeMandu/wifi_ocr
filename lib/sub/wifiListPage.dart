@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wifi_connector/wifi_connector.dart';
+
 import '../wifiItem.dart';
 
 class WifiListPage extends StatefulWidget {
@@ -37,34 +38,72 @@ class _WifiListPage extends State<WifiListPage> {
                               context));
                     },
                   ),
-                  title: GestureDetector(
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      GestureDetector(
+                        child: Text(
+                          Wifi.wifiList[position].name!,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.bold),
+                        ),
+                        onTap: () async {
+                          //wifi 연결
+                          _onNamePressed(position);
+                        },
+                        onLongPress: () {
+                          //삭제 여부 알러드다이어그램
+                          AlertDialog dialog = AlertDialog(
+                            title: Text('목록에서 제거하기'),
+                            content: Text(
+                              '${Wifi.wifiList[position].name} 을/를 목록에서 제거하시겠습니까?',
+                              style: TextStyle(fontSize: 30.0),
+                            ),
+                            actions: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    Wifi.wifiList.removeAt(position);
+                                  });
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('예'),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  print(position);
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('아니요'),
+                              ),
+                            ],
+                          );
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) => dialog);
+                        },
+                      ),
+                      GestureDetector(
+                        child: Column(children: <Widget>[
                           Text(
-                            Wifi.wifiList[position].name!,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 24, fontWeight: FontWeight.bold),
+                            "SSID : " + Wifi.wifiList[position].ssid!,
+                            style: TextStyle(fontSize: 12),
                           ),
-                          Column(children: <Widget>[
-                            Text(
-                              "SSID : " + Wifi.wifiList[position].ssid!,
-                              style: TextStyle(fontSize: 12),
-                            ),
-                            Text(
-                              "Bands : 2.4Ghz", //getBandType()
-                              style: TextStyle(fontSize: 12),
-                            ),
-                          ]),
+                          Text(
+                            "Bands : 2.4Ghz", //getBandType()
+                            style: TextStyle(fontSize: 12),
+                          ),
                         ]),
-                    onTap: () async {
-                      //세부정보 표시
-                      await showDialog(
-                          context: context,
-                          builder: (_) =>
-                              detailDialog(Wifi.wifiList[position], context));
-                    },
+                        onTap: () async {
+                          //세부정보 표시
+                          await showDialog(
+                              context: context,
+                              builder: (_) => detailDialog(
+                                  Wifi.wifiList[position], context));
+                        },
+                      ),
+                    ],
                   ),
                   trailing: ReorderableDragStartListener(
                     index: position,
@@ -162,4 +201,11 @@ Widget detailDialog(wifi, context) {
       ],
     ),
   );
+}
+
+Future<void> _onNamePressed(position) async {
+  final ssid = Wifi.wifiList[position].ssid; //maxLength: 32
+  final password = Wifi.wifiList[position].pw; //minLength: 8, maxLength: 16(WEP)/63(WPA1,2)
+  print(ssid);
+  await WifiConnector.connectToWifi(ssid: ssid!, password: password);
 }
