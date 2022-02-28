@@ -5,8 +5,5 @@ class Wifi {
   String? pw;
   bool? isConnected = false;
 
-  Wifi(
-      { required this.ssid,
-        required this.pw,
-        this.isConnected});
+  Wifi({required this.ssid, required this.pw, this.isConnected});
 }

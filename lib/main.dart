@@ -37,7 +37,8 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin{
+class _MyHomePageState extends State<MyHomePage>
+    with SingleTickerProviderStateMixin {
   TabController? controller;
   List<Wifi> wifiList = List.empty(growable: true);
 
@@ -50,30 +51,30 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: TabBarView(
-        children: <Widget>[
-          WifiListPage(list: wifiList),
-          ScanPage(),
-          TextFieldPage(),
-        ],
-        controller: controller,
-      ),
-      bottomNavigationBar: TabBar(
-        tabs: <Tab>[
-          Tab(
-            icon: Icon(Icons.format_list_bulleted, color: Colors.blue),
-          ),
-          Tab(
-            icon: Icon(Icons.qr_code_scanner, color: Colors.blue),
-          ),
-          Tab(
-            icon: Icon(Icons.edit, color: Colors.blue),
-          ),
-        ],
-        controller: controller,
-      ));
+        appBar: AppBar(
+          title: Text(widget.title),
+        ),
+        body: TabBarView(
+          children: <Widget>[
+            WifiListPage(list: wifiList),
+            ScanPage(),
+            TextFieldPage(),
+          ],
+          controller: controller,
+        ),
+        bottomNavigationBar: TabBar(
+          tabs: <Tab>[
+            Tab(
+              icon: Icon(Icons.format_list_bulleted, color: Colors.blue),
+            ),
+            Tab(
+              icon: Icon(Icons.qr_code_scanner, color: Colors.blue),
+            ),
+            Tab(
+              icon: Icon(Icons.edit, color: Colors.blue),
+            ),
+          ],
+          controller: controller,
+        ));
   }
 }
