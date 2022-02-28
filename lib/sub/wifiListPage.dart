@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../wifiItem.dart';
 
 class WifiListPage extends StatefulWidget {
-  final List<Wifi> list; // wifi List 선언
-  WifiListPage({Key? key, required this.list}) : super(key: key);
+  WifiListPage({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _WifiListPage();
@@ -20,16 +21,20 @@ class _WifiListPage extends State<WifiListPage> {
                 return ListTile(
                   key: Key('$position'),
                   leading: GestureDetector(
-                    child: Image.asset(
-                      widget.list[position].imagePath!,
-                      fit: BoxFit.contain,
+                    child: QrImage(
+                      data:
+                          "WIFI:S:${Wifi.wifiList[position].ssid};T:WPA;P:${Wifi.wifiList[position].pw};;",
+                      version: QrVersions.auto,
+                      // size: 200.0,
+                      // fit: BoxFit.contain,
                     ),
                     onTap: () async {
                       //QR만 확대
                       await showDialog(
                           context: context,
                           builder: (_) => qrDialog(
-                              widget.list[position].imagePath!, context));
+                              "WIFI:S:${Wifi.wifiList[position].ssid};T:WPA;P:${Wifi.wifiList[position].pw};;",
+                              context));
                     },
                   ),
                   title: GestureDetector(
@@ -37,14 +42,14 @@ class _WifiListPage extends State<WifiListPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           Text(
-                            widget.list[position].name!,
+                            Wifi.wifiList[position].name!,
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 24, fontWeight: FontWeight.bold),
                           ),
                           Column(children: <Widget>[
                             Text(
-                              "SSID : " + widget.list[position].ssid!,
+                              "SSID : " + Wifi.wifiList[position].ssid!,
                               style: TextStyle(fontSize: 12),
                             ),
                             Text(
@@ -58,7 +63,7 @@ class _WifiListPage extends State<WifiListPage> {
                       await showDialog(
                           context: context,
                           builder: (_) =>
-                              detailDialog(widget.list[position], context));
+                              detailDialog(Wifi.wifiList[position], context));
                     },
                   ),
                   trailing: ReorderableDragStartListener(
@@ -72,7 +77,7 @@ class _WifiListPage extends State<WifiListPage> {
                   _updateItems(oldIndex, newIndex);
                 });
               },
-              itemCount: widget.list.length),
+              itemCount: Wifi.wifiList.length),
         ),
       ),
     );
@@ -83,12 +88,14 @@ class _WifiListPage extends State<WifiListPage> {
       newIndex -= 1;
     }
 
-    final item = widget.list.removeAt(oldIndex);
-    widget.list.insert(newIndex, item);
+    final item = Wifi.wifiList.removeAt(oldIndex);
+    Wifi.wifiList.insert(newIndex, item);
+
+    Wifi.saveList();
   }
 }
 
-Widget qrDialog(path, context) {
+Widget qrDialog(data, context) {
   return Dialog(
     // backgroundColor: Colors.transparent,
     // elevation: 0,
@@ -110,9 +117,11 @@ Widget qrDialog(path, context) {
         Container(
           width: 350,
           height: 350,
-          child: Image.asset(
-            path,
-            fit: BoxFit.cover,
+          child: QrImage(
+            data: data,
+            version: QrVersions.auto,
+            // size: 200.0,
+            // fit: BoxFit.contain,
           ),
         ),
       ],

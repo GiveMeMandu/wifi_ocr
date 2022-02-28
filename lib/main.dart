@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:wifi_connector/wifi_connector.dart';
 import 'package:camera/camera.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../wifiItem.dart';
 import 'package:wifi_ocr/sub/scanPage.dart';
@@ -40,36 +43,46 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
   TabController? controller;
-  List<Wifi> wifiList = List.empty(growable: true);
 
   @override
   void initState() {
     super.initState();
     controller = TabController(length: 2, vsync: this);
-    wifiList.add(Wifi(
-        name: '우찬 자취방',
-        ssid: 'Bourbon',
-        pw: 'examplePW',
-        imagePath: 'assets/QR_wiki.svg',
-        isFiveGhz: false));
-    wifiList.add(Wifi(
-        name: '현수 자취방',
-        ssid: 'Bourbon',
-        pw: 'examplePW',
-        imagePath: 'assets/QR_wiki.svg',
-        isFiveGhz: false));
-    wifiList.add(Wifi(
-        name: '인영 자취방',
-        ssid: 'Bourbon',
-        pw: 'examplePW',
-        imagePath: 'assets/QR_wiki.svg',
-        isFiveGhz: false));
-    wifiList.add(Wifi(
-        name: '수연 자취방',
-        ssid: 'Bourbon',
-        pw: 'examplePW',
-        imagePath: 'assets/QR_wiki.svg',
-        isFiveGhz: false));
+
+    SharedPreferences.getInstance().then((e) {
+      final savedLst = e.getStringList('wifiList');
+      if (savedLst != null && savedLst.isNotEmpty) {
+        Wifi.wifiList =
+            savedLst.map((e) => Wifi.fromJson(jsonDecode(e))).toList();
+      } else {
+        // 테스트용 데이터
+        Wifi.wifiList.add(Wifi(
+            name: '우찬 자취방',
+            ssid: 'Bourbon',
+            pw: 'examplePW',
+            imagePath: 'assets/QR_wiki.svg',
+            isFiveGhz: false));
+        Wifi.wifiList.add(Wifi(
+            name: '현수 자취방',
+            ssid: 'Bourbon',
+            pw: 'examplePW',
+            imagePath: 'assets/QR_wiki.svg',
+            isFiveGhz: false));
+        Wifi.wifiList.add(Wifi(
+            name: '인영 자취방',
+            ssid: 'Bourbon',
+            pw: 'examplePW',
+            imagePath: 'assets/QR_wiki.svg',
+            isFiveGhz: false));
+        Wifi.wifiList.add(Wifi(
+            name: '수연 자취방',
+            ssid: 'Bourbon',
+            pw: 'examplePW',
+            imagePath: 'assets/QR_wiki.svg',
+            isFiveGhz: false));
+      }
+      setState(() {});
+    });
   }
 
   @override
@@ -80,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage>
         ),
         body: TabBarView(
           children: <Widget>[
-            WifiListPage(list: wifiList),
+            WifiListPage(),
             ScanPage(),
           ],
           controller: controller,

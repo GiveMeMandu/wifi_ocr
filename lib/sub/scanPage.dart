@@ -2,6 +2,8 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:wifi_ocr/cameraModule.dart';
+import 'package:wifi_ocr/sub/wifiListPage.dart';
+import '../wifiItem.dart';
 
 class ScanPage extends StatefulWidget {
   ScanPage({Key? key}) : super(key: key);
@@ -13,6 +15,7 @@ class ScanPage extends StatefulWidget {
 class _ScanPage extends State<ScanPage> {
   final _ssidController = TextEditingController(text: '');
   final _passwordController = TextEditingController(text: '');
+  QrImage? image;
 
   @override
   Widget build(BuildContext context) {
@@ -48,9 +51,11 @@ class _ScanPage extends State<ScanPage> {
                 ),
               ],
             ),
-            Image.asset(
-              'assets/QR_wiki.svg',
-              width: 300,
+            QrImage(
+              data:
+                  "WIFI:S:${_ssidController.text};T:WPA;P:${_passwordController.text};;",
+              version: QrVersions.auto,
+              size: 200.0,
             ),
             Column(
               children: <Widget>[
@@ -67,6 +72,10 @@ class _ScanPage extends State<ScanPage> {
             ElevatedButton(
               child: Text('Connect & Save'),
               onPressed: () {
+                Wifi.addWifi(_ssidController.text, _ssidController.text,
+                    _passwordController.text, 'assets/QR_wiki.svg', false);
+                _ssidController.text = '';
+                _passwordController.text = '';
                 //wifi 연결 시도 후 성공 시 wifi클래스 정보 담은 QR생성 및 List에 추가
               },
             ),
