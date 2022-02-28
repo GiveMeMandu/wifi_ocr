@@ -6,7 +6,6 @@ import 'package:camera/camera.dart';
 
 import '../wifiItem.dart';
 import 'package:wifi_ocr/sub/scanPage.dart';
-import 'package:wifi_ocr/sub/textFieldPage.dart';
 import 'package:wifi_ocr/sub/wifiListPage.dart';
 
 void main() {
